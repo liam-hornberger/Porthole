@@ -1,11 +1,13 @@
-import { Button, VerticalBox, Palette } from "std-widgets.slint";
+import { Button, VerticalBox, Palette, HorizontalBox, Switch, ProgressIndicator } from "std-widgets.slint";
 
 export component AppWindow inherits Window {
     width: 500px;
-    height: 140px;  
-    in-out property <int> counter: 42;
+    height: 190px;  
+    in-out property <int> activepage: 0;
+    in-out property <float> loadingbar: 0.0;
+    in-out property <string> loadingtext: "Loading...";
     callback request-increase-value();
-    VerticalBox {
+    if (activepage == 1) : VerticalBox {
         Text {
             text: "Enter Your Holesail Code Below (hs://...)";
             horizontal-alignment: center;
@@ -26,9 +28,59 @@ export component AppWindow inherits Window {
             }
         }
 
+        HorizontalBox {
+            height: 50px;
+            padding: 2px;
+            
+            HorizontalBox {
+                width: 250px;
+                padding-right: 100px;
+                
+                Text {
+                    text: "Port (Optional)";
+                    vertical-alignment: center;
+                }
+                Rectangle {
+                    height: 30px;
+                    border-radius: 16px;
+                    background: gray;
+                    width: 100px;
+                    
+                }
+            }
+            HorizontalBox {
+                padding-right: 120px;
+                width: 250px;
+                Text {
+                    text: "Start On Boot? (WIP)";
+                    vertical-alignment: center;
+                }
+                Switch {
+                    enabled: false;
+                }
+            }
+        }
+
         Button {
             height: 40px;
             text: "Connect";
         }
+    }
+    if (activepage == 0) :  VerticalBox {
+        padding: 20px;
+        Text {
+            text: root.loadingtext;
+            font-weight: 700;
+            font-size: 20px;
+            vertical-alignment: center;
+            horizontal-alignment: center;
+            wrap: word-wrap;
+        }
+        // ProgressIndicator {
+        //     progress: root.loadingbar;
+        //     height: 6px;
+            
+            
+        //  }
     }
 }
