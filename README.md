@@ -6,7 +6,7 @@
 Porthole is a lightweight, high-performance desktop client built with Slint and Rust, designed specifically for connecting to Holesail networks. Unlike complex server-side tools, Porthole focuses entirely on the "connector" experience—providing a streamlined, "one-click" interface for users to join remote P2P tunnels.
 
 ## Features
-- [ ] Download Holesail bianarys
+- [x] Download Holesail bianarys
 - [ ] Connect to Holesail servers
 - [ ] Connect with custom ports
 - [ ] Start Holesail connection with app UI on system boot

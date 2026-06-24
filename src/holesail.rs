@@ -22,18 +22,18 @@ pub fn download() -> Result<PathBuf, String> {
     let proj = ProjectDirs::from("com", "holesail", "porthole").ok_or("No data directory found")?;
     let target_dir = proj.data_dir().to_path_buf();
     
-    // 1. Fetch ZIP package directly into memory bytes
+    // Download Holesail
     let bytes = reqwest::blocking::get(get_holesail_url())
         .map_err(|e| e.to_string())?
         .bytes()
         .map_err(|e| e.to_string())?;
 
-    // 2. Unpack everything inside the bytes array straight into target directory
+    // Unzip it
     fs::create_dir_all(&target_dir).map_err(|e| e.to_string())?;
     zip_extract::extract(std::io::Cursor::new(bytes), &target_dir, true)
         .map_err(|e| format!("Extraction failure: {}", e))?;
 
-    // 3. Return path to the extracted binary (zip-extract preserves executable flags automatically!)
+    // Clean up
     let bin_name = if cfg!(windows) { "holesail.exe" } else { "holesail" };
     Ok(target_dir.join(bin_name))
 }
