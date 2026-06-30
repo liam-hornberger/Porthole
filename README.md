@@ -13,7 +13,7 @@ Porthole is a lightweight, high-performance desktop client built with Slint and 
 
 ## How to build
 
-```rust
+```shell
 # Clone the repository
 git clone https://github.com/liam-hornberger/Porthole.git
 
