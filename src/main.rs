@@ -1,10 +1,20 @@
 use iced::widget::{column, text, text_input, button, Text};
-use iced::{Element, Fill, Font};
+use iced::{Element, Fill, Font, Theme, Size};
+use std::path::PathBuf;
 
 mod holesail;
 
 fn main() -> iced::Result {
-    iced::run(update, view)
+    iced::application(State::default, update, view)
+        .title("Porthole")
+        .theme(Theme::Dark) 
+        .window(iced::window::Settings {
+            // Set the initial launch size
+            size: Size::new(600.0, 300.0),
+            resizable: false, 
+            ..Default::default()
+        })
+        .run()
 }
 
 struct State {
@@ -34,11 +44,18 @@ fn update(state: &mut State, message: Message) {
         }
         Message::Submit(code) => {
             println!("Code: {} ", code);
-            state.status = "Downloading...".to_string();
-            let holesail_path = holesail::download();
-            state.status = "Connecting...".to_string();
-            // Connect TODO
-            state.status = "Disconnect".to_string();
+            // i know it looks bad...
+            if state.status == "Connect".to_string() {
+                state.status = "Downloading...".to_string();
+                let holesail_path: PathBuf = holesail::download().expect("Failed to download Holesail");
+                state.status = "Connecting...".to_string();
+                holesail::connect(&holesail_path, &code);
+                state.status = "Disconnect".to_string();
+            } else {
+                state.status = "Stopping".to_string();
+                holesail::stop();
+                state.status = "Connect".to_string();
+            }
         }
     }
 }
