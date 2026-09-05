@@ -1,8 +1,8 @@
 use std::fs;
-use std::path::PathBuf;
 use directories::ProjectDirs;
 use std::process::Command;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use sysinfo::{System, ProcessesToUpdate};
 
 fn get_holesail_url() -> &'static str {
     match (std::env::consts::OS, std::env::consts::ARCH) {
@@ -92,3 +92,20 @@ pub fn stop() {
     
     println!("Stop command completed.");
 }
+
+pub fn is_active() -> bool {
+    let mut sys = System::new();
+    
+    sys.refresh_processes(ProcessesToUpdate::All, true);
+
+    // Scan through everything
+    for (_pid, process) in sys.processes() {
+        let process_name = process.name().to_string_lossy().to_lowercase();
+        if process_name.contains("holesail") {
+            println!("Found active Holesail instance: [PID: {}]", _pid);
+            return true;
+        }
+    }
+
+    false
+}   

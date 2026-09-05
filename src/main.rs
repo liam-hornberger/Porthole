@@ -31,9 +31,16 @@ enum Message {
 // Defaults for State (Content and string)
 impl Default for State {
     fn default() -> Self {
-        Self {
-            content: String::new(),
-            status: String::from("Connect"),
+        if holesail::is_active() {
+            Self {
+                content: String::new(),
+                status: String::from("Disconnect"),
+            }
+        } else {
+            Self {
+                content: String::new(),
+                status: String::from("Connect"),
+            }
         }
     }
 }
