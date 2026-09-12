@@ -19,7 +19,7 @@ pub fn round_text_input(theme: &Theme, status: text_input::Status) -> text_input
 
     text_input::Style {
         border: Border {
-            radius: 8.0.into(),
+            radius: 14.0.into(),
             ..base.border
         },
         ..base

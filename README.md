@@ -8,7 +8,7 @@ Porthole is a lightweight, high-performance desktop client built with Slint and 
 ## Features
 - [x] Download Holesail bianarys
 - [x] Connect to Holesail servers
-- [ ] Connect with custom ports
+- [X] Connect with custom ports
 - [ ] Start Holesail connection without app UI on system boot
 
 ## How to build

@@ -56,12 +56,12 @@ fn update(state: &mut State, message: Message) {
         }
         Message::Submit(code) => {
             println!("Code: {} ", code);
-            // i know it looks bad...
+            // i know it looks bad... but it works... kinda
             if state.status == "Connect".to_string() {
                 state.status = "Downloading...".to_string();
                 let holesail_path: PathBuf = holesail::download().expect("Failed to download Holesail");
                 state.status = "Connecting...".to_string();
-                holesail::connect(&holesail_path, &code);
+                holesail::connect(&holesail_path, &code, &state.port.clone());
                 state.status = "Disconnect".to_string();
             } else {
                 state.status = "Stopping".to_string();
@@ -89,7 +89,7 @@ fn view(state: &State) -> Element<'_, Message> {
             .style(theme::round_text_input)
             .line_height(2.0),
         column![
-            text_input("Port... [NOT IMPLEMENTED]", &state.port)
+            text_input("Port (Optional)...", &state.port)
             .on_input(Message::PortChanged)
             .style(theme::round_text_input)
             .width(300)

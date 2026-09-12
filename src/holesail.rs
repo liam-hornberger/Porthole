@@ -47,7 +47,7 @@ pub fn download() -> Result<PathBuf, String> {
 use std::os::windows::process::CommandExt;
 
 // Connects to holesail in a background service
-pub fn connect(holesail_path: &Path, passphrase: &str) {
+pub fn connect(holesail_path: &Path, passphrase: &str, port: &str) {
     println!(""); // REMOVE
     println!("Finding Holesail"); // REMOVE
     if !holesail_path.exists() {
@@ -57,6 +57,13 @@ pub fn connect(holesail_path: &Path, passphrase: &str) {
     println!("Creating command"); // REMOVE
     let mut command = Command::new(holesail_path);
     command.arg(passphrase);
+    if port.trim().is_empty() {
+        println!("Port not found");
+    } else {
+        println!("Port found");
+        command.arg("--port");
+        command.arg(port);
+    }
 
     // Windows Only: Prevents windows from spawning a window
     #[cfg(target_os = "windows")]
